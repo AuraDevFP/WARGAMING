@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ShizzyBoost - FunPay</title>
+
+<!--
+=========================================================
+ НАСТРОЙКА САЙТА
+=========================================================
+
+ 1. Положи своё фото рядом с index.html.
+ 2. В строке ниже укажи точное название файла.
+
+ Например:
+ const BACKGROUND_IMAGE = "my-screen.png";
+
+ Поддерживаются: .jpg / .jpeg / .png / .webp / .gif
+
+ Больше в коде ничего менять НЕ НУЖНО.
+=========================================================
+-->
+<script>
+    const BACKGROUND_IMAGE = "screenshot.png";
+</script>
+
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%}
+
+body{
+    overflow:hidden;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#0d0912 center/cover no-repeat fixed;
+}
+
+/* затемнение поверх изображения */
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:
+        linear-gradient(135deg,
+            rgba(5,3,8,.48),
+            rgba(17,5,20,.17),
+            rgba(3,2,7,.52));
+}
+
+/* мягкое розовое свечение */
+.glow{
+    position:fixed;
+    width:500px;
+    height:500px;
+    right:-170px;
+    top:-220px;
+    border-radius:50%;
+    background:rgba(255,35,145,.18);
+    filter:blur(90px);
+    z-index:2;
+    pointer-events:none;
+    animation:pulse 5s ease-in-out infinite alternate;
+}
+
+.glow2{
+    position:fixed;
+    width:360px;
+    height:360px;
+    left:-170px;
+    bottom:-180px;
+    border-radius:50%;
+    background:rgba(190,35,255,.10);
+    filter:blur(90px);
+    z-index:2;
+    pointer-events:none;
+    animation:pulse2 7s ease-in-out infinite alternate;
+}
+
+/* частицы */
+.particles{
+    position:fixed;
+    inset:0;
+    z-index:3;
+    pointer-events:none;
+    overflow:hidden;
+}
+
+.particles i{
+    position:absolute;
+    left:var(--x);
+    bottom:-10px;
+    width:var(--size);
+    height:var(--size);
+    border-radius:50%;
+    background:#ff4fa4;
+    box-shadow:
+        0 0 8px #ff4fa4,
+        0 0 20px rgba(255,79,164,.55);
+    opacity:0;
+    animation:
+        particle var(--duration) linear var(--delay) infinite;
+}
+
+/* разнообразие частиц */
+.particles i:nth-child(1){--x:5%;--size:2px;--duration:12s;--delay:-3s}
+.particles i:nth-child(2){--x:12%;--size:3px;--duration:17s;--delay:-9s}
+.particles i:nth-child(3){--x:19%;--size:2px;--duration:14s;--delay:-5s}
+.particles i:nth-child(4){--x:27%;--size:4px;--duration:19s;--delay:-13s}
+.particles i:nth-child(5){--x:34%;--size:2px;--duration:11s;--delay:-2s}
+.particles i:nth-child(6){--x:42%;--size:3px;--duration:16s;--delay:-8s}
+.particles i:nth-child(7){--x:49%;--size:2px;--duration:21s;--delay:-16s}
+.particles i:nth-child(8){--x:56%;--size:3px;--duration:13s;--delay:-4s}
+.particles i:nth-child(9){--x:63%;--size:2px;--duration:18s;--delay:-11s}
+.particles i:nth-child(10){--x:70%;--size:4px;--duration:15s;--delay:-7s}
+.particles i:nth-child(11){--x:77%;--size:2px;--duration:20s;--delay:-14s}
+.particles i:nth-child(12){--x:84%;--size:3px;--duration:12s;--delay:-6s}
+.particles i:nth-child(13){--x:91%;--size:2px;--duration:17s;--delay:-10s}
+.particles i:nth-child(14){--x:97%;--size:3px;--duration:14s;--delay:-1s}
+.particles i:nth-child(15){--x:23%;--size:2px;--duration:23s;--delay:-18s}
+.particles i:nth-child(16){--x:67%;--size:2px;--duration:22s;--delay:-15s}
+
+@keyframes particle{
+    0%{
+        transform:translate3d(0,0,0) scale(.4);
+        opacity:0;
+    }
+    10%{opacity:.65}
+    45%{opacity:.3}
+    75%{opacity:.7}
+    100%{
+        transform:translate3d(var(--drift,70px),-115vh,0) scale(1.25);
+        opacity:0;
+    }
+}
+
+@keyframes pulse{
+    from{transform:scale(.9);opacity:.5}
+    to{transform:scale(1.15);opacity:1}
+}
+
+@keyframes pulse2{
+    from{transform:scale(.85);opacity:.35}
+    to{transform:scale(1.15);opacity:.8}
+}
+
+/* верхний блок продавца */
+.seller{
+    position:fixed;
+    top:25px;
+    right:28px;
+    z-index:10;
+
+    display:flex;
+    align-items:center;
+    gap:13px;
+
+    padding:12px 17px;
+
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:15px;
+
+    background:rgba(10,7,14,.55);
+    box-shadow:
+        0 12px 40px rgba(0,0,0,.32),
+        inset 0 0 25px rgba(255,255,255,.025);
+
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+
+    animation:appear .8s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.label{
+    color:rgba(255,255,255,.62);
+    font-size:14px;
+}
+
+.name{
+    color:#fff;
+    font-size:14px;
+    font-weight:700;
+}
+
+.divider{
+    width:1px;
+    height:18px;
+    background:rgba(255,255,255,.18);
+}
+
+.funpay{
+    position:relative;
+    color:#ff4fa4;
+    font-size:14px;
+    font-weight:700;
+    text-decoration:none;
+    transition:.25s ease;
+}
+
+.funpay::after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:-4px;
+    height:1px;
+    background:#ff4fa4;
+    transform:scaleX(0);
+    transform-origin:right;
+    transition:.25s ease;
+    box-shadow:0 0 8px #ff4fa4;
+}
+
+.funpay:hover{
+    color:#ff83be;
+    text-shadow:0 0 15px rgba(255,79,164,.7);
+    transform:translateY(-1px);
+}
+
+.funpay:hover::after{
+    transform:scaleX(1);
+    transform-origin:left;
+}
+
+@keyframes appear{
+    from{
+        opacity:0;
+        transform:translateY(-18px);
+        filter:blur(6px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+        filter:none;
+    }
+}
+
+@media(max-width:600px){
+    .seller{
+        top:16px;
+        right:16px;
+        gap:9px;
+        padding:10px 13px;
+    }
+
+    .label,.name,.funpay{
+        font-size:12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="glow"></div>
+<div class="glow2"></div>
+
+<div class="particles">
+    <i></i><i></i><i></i><i></i>
+    <i></i><i></i><i></i><i></i>
+    <i></i><i></i><i></i><i></i>
+    <i></i><i></i><i></i><i></i>
+</div>
+
+<div class="seller">
+    <span class="label">Продавец:</span>
+    <span class="name">ShizzyBoost</span>
+    <span class="divider"></span>
+    <a
+        class="funpay"
+        href="https://funpay.com/users/8180891/"
+        target="_blank"
+        rel="noopener noreferrer"
+    >FunPay ↗</a>
+</div>
+
+<script>
+    // Подставляем выбранное пользователем изображение как фон.
+    document.body.style.backgroundImage =
+        `url("${BACKGROUND_IMAGE}")`;
+</script>
+
+</body>
+</html>
